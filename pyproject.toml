@@ -8,6 +8,10 @@ packages = [{include = "predictive_cmi", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.13"
+pandas = "^2.2.3"
+numpy = "^2.2.5"
+scikit-learn = "^1.6.1"
+joblib = "^1.5.0"
 
 
 [build-system]
