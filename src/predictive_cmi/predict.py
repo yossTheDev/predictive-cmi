@@ -1,25 +1,29 @@
-# src/predictive_cmi/predict.py
 """
-This module provides a function to make sales predictions using a pre-trained regression model.
+This module provides functions to make predictions using a multi-output regression model.
 Functions:
 ----------
-- predict(Precio, Costo, Rotacion, Marketing):
-    Predicts sales based on input features: average price, costs, rotation, and marketing investment.
-Usage:
-------
-The `predict` function can be used to estimate sales by providing the required input features.
-The script can also be executed directly to test the prediction with sample inputs.
+- predict_all(...): Returns predictions for all available target variables.
+- predict_metric(..., metric): Returns only one specific metric from the model's output.
 """
 
 import joblib
 import pandas as pd
 
 
-def predict(Precio, Costo, Rotacion, Marketing):
-    # Load the trained model
+def predict_all(
+    Precio,
+    Costo,
+    Rotacion,
+    Marketing,
+    Ingresos_totales,
+    Costos_operativos,
+    Precio_competencia,
+    Demanda_sectorial,
+):
+    # Load trained multi-output regression model
     model = joblib.load("modelo_regresion.pkl")
 
-    # Create input as a DataFrame with correct feature names
+    # Input data with all expected features
     entrada = pd.DataFrame(
         [
             {
@@ -27,15 +31,42 @@ def predict(Precio, Costo, Rotacion, Marketing):
                 "Costos": Costo,
                 "Rotacion": Rotacion,
                 "Marketing": Marketing,
+                "Ingresos_totales": Ingresos_totales,
+                "Costos_operativos": Costos_operativos,
+                "Precio_competencia": Precio_competencia,
+                "Demanda_sectorial": Demanda_sectorial,
             }
         ]
     )
 
-    # Predict using the model
+    # Predict
     pred = model.predict(entrada)
-    return pred[0]
+    pred = pred[0]  # Extract from array
+
+    return {
+        "Ventas": pred[0],
+        "Beneficio_neto": pred[1],
+        "Ingresos_totales_estimado": pred[2],
+    }
+
+
+def predict_metric(*args, metric="Ventas", **kwargs):
+    result = predict_all(*args, **kwargs)
+    return result.get(metric, None)
 
 
 if __name__ == "__main__":
-    resultado = predict(135, 48, 8, 17)
-    print(f"🔮 Predicción de ventas: {resultado:.2f}")
+    predicciones = predict_all(
+        Precio=135,
+        Costo=48,
+        Rotacion=8,
+        Marketing=17,
+        Ingresos_totales=14500,
+        Costos_operativos=4800,
+        Precio_competencia=108,
+        Demanda_sectorial=1.55,
+    )
+
+    print("🔮 Predicción completa:")
+    for key, value in predicciones.items():
+        print(f" - {key}: {value:.2f}")
