@@ -26,6 +26,11 @@ class PredictionInput(BaseModel):
     Demanda_sectorial: float
 
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the prediction API!"}
+
+
 @app.post("/predict")
 def predict_endpoint(data: PredictionInput):
     result = predict_all(
