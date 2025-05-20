@@ -13,12 +13,13 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
     <main className="my-auto mx-8 h-fit flex flex-col p-4 rounded-xl border border-neutral-200">
       <div className="flex">
         {/* Table & Form */}
-        <div className="grid h-full grid-cols-1 gap-4">
+        <div className="flex flex-col w-1/2 gap-4">
+          <h3>Datos</h3>
           <DataTable columns={columns} data={rows} />
         </div>
 
         {/* Statistics and Charts */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col w-1/2 gap-4">
           <StatisticsCard rows={rows} />
           <PredictionCharts rows={rows} />
         </div>
