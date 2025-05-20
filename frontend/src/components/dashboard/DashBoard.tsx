@@ -23,13 +23,13 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
 
       <div className="grid md:grid-cols-2">
         {/* Table & Form */}
-        <div>
+        <div className="grid grid-cols-1 grid-rows-2 gap-4">
           <DataTable columns={columns} data={rows} />
           <FormAddPrediction onAddRow={handleAddRow} />
         </div>
 
         {/* Statistics and Charts */}
-        <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 grid-rows-2 gap-4">
           <StatisticsCard rows={rows} />
           <PredictionCharts rows={rows} />
         </div>
