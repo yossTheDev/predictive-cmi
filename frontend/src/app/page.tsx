@@ -16,6 +16,7 @@ import {
 import { PlusCircle } from "lucide-react";
 import { PredictionResult } from "@/types/result";
 import { StatisticsCard } from "@/components/StadisticsCard";
+import { PredictionCharts } from "@/components/PredictionCharts";
 
 // Field names (backend keys) with user-friendly labels
 const fields: Record<string, string> = {
@@ -75,85 +76,96 @@ export default function Home() {
   };
 
   return (
-    <main className="max-w-7xl mx-auto p-6">
+    <main className="max-w-8xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">
         📊 Predicción de KPIs
       </h1>
 
-      <StatisticsCard rows={rows} />
+      <div className="grid md:grid-cols-2">
+        {/* Table */}
+        <div>
+          <Table>
+            <TableCaption>Datos ingresados y resultados obtenidos</TableCaption>
+            <TableHeader>
+              <TableRow>
+                {Object.keys(fields).map((key) => (
+                  <TableHead key={key} className="min-w-[160px] text-xs">
+                    {fields[key]}
+                  </TableHead>
+                ))}
+                <TableHead className="min-w-[200px]">Resultado</TableHead>
+              </TableRow>
+            </TableHeader>
 
-      <Table>
-        <TableCaption>Datos ingresados y resultados obtenidos</TableCaption>
-        <TableHeader>
-          <TableRow>
-            {Object.keys(fields).map((key) => (
-              <TableHead key={key} className="min-w-[160px] text-xs">
-                {fields[key]}
-              </TableHead>
-            ))}
-            <TableHead className="min-w-[200px]">Resultado</TableHead>
-          </TableRow>
-        </TableHeader>
+            <TableBody>
+              {rows.length === 0 && (
+                <TableRow>
+                  <TableCell
+                    colSpan={Object.keys(fields).length + 1}
+                    className="text-center text-xs p-4"
+                  >
+                    No hay datos aún. Agrega uno abajo.
+                  </TableCell>
+                </TableRow>
+              )}
 
-        <TableBody>
-          {rows.length === 0 && (
-            <TableRow>
-              <TableCell
-                colSpan={Object.keys(fields).length + 1}
-                className="text-center text-xs p-4"
-              >
-                No hay datos aún. Agrega uno abajo.
-              </TableCell>
-            </TableRow>
-          )}
-
-          {rows.map((row, index) => (
-            <TableRow key={index}>
-              {Object.keys(fields).map((key) => (
-                <TableCell key={key} className="text-xs">
-                  {row[key]}
-                </TableCell>
+              {rows.map((row, index) => (
+                <TableRow key={index}>
+                  {Object.keys(fields).map((key) => (
+                    <TableCell key={key} className="text-xs">
+                      {row[key]}
+                    </TableCell>
+                  ))}
+                  <TableCell className="text-xs space-y-1">
+                    {row.result && (
+                      <>
+                        <p>🔮 Ventas: {row.result.Ventas.toFixed(2)}</p>
+                        <p>
+                          💰 Beneficio: {row.result.Beneficio_neto.toFixed(2)}
+                        </p>
+                        <p>
+                          📈 Ingresos Estimados:{" "}
+                          {row.result.Ingresos_totales_estimado.toFixed(2)}
+                        </p>
+                      </>
+                    )}
+                  </TableCell>
+                </TableRow>
               ))}
-              <TableCell className="text-xs space-y-1">
-                {row.result && (
-                  <>
-                    <p>🔮 Ventas: {row.result.Ventas.toFixed(2)}</p>
-                    <p>💰 Beneficio: {row.result.Beneficio_neto.toFixed(2)}</p>
-                    <p>
-                      📈 Ingresos Estimados:{" "}
-                      {row.result.Ingresos_totales_estimado.toFixed(2)}
-                    </p>
-                  </>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+            </TableBody>
+          </Table>
 
-      {/* Card para agregar nueva fila */}
-      <div className="mt-8 p-6 border rounded-lg shadow-md max-w-3xl mx-auto">
-        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <PlusCircle className="w-5 h-5" /> Agregar nueva fila
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {Object.keys(fields).map((key) => (
-            <div key={key} className="flex flex-col">
-              <label htmlFor={key} className="mb-1 font-medium">
-                {fields[key]}
-              </label>
-              <Input
-                id={key}
-                type="number"
-                value={newRow[key]}
-                onChange={(e) => handleInputChange(key, e.target.value)}
-              />
+          {/* Card para agregar nueva fila */}
+          <div className="mt-8 p-6 border rounded-lg shadow-md max-w-3xl mx-auto">
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <PlusCircle className="w-5 h-5" /> Agregar nueva fila
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {Object.keys(fields).map((key) => (
+                <div key={key} className="flex flex-col">
+                  <label htmlFor={key} className="mb-1 font-medium">
+                    {fields[key]}
+                  </label>
+                  <Input
+                    id={key}
+                    type="number"
+                    value={newRow[key]}
+                    onChange={(e) => handleInputChange(key, e.target.value)}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+            <Button onClick={handleAddRow} className="mt-6 w-full">
+              Agregar fila
+            </Button>
+          </div>
         </div>
-        <Button onClick={handleAddRow} className="mt-6 w-full">
-          Agregar fila
-        </Button>
+
+        {/* Statistics and Charts */}
+        <div className="flex flex-col gap-4">
+          <StatisticsCard rows={rows} />
+          <PredictionCharts rows={rows} />
+        </div>
       </div>
     </main>
   );
