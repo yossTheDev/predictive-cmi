@@ -10,11 +10,11 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
   const rows = initialData;
 
   return (
-    <main className="my-auto mx-8 h-fit flex flex-col p-4 rounded-xl border border-neutral-200">
+    <main className="my-auto mt-10 mx-8 h-fit flex flex-col p-4 rounded-xl border border-neutral-200">
       <div className="flex">
         {/* Table & Form */}
         <div className="flex flex-col w-1/2 gap-4">
-          <h3>Datos</h3>
+          <h3 className="text-2xl font-bold">Datos</h3>
           <DataTable columns={columns} data={rows} />
         </div>
 
