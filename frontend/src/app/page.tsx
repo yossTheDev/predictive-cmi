@@ -1,5 +1,5 @@
 import { getDataFromBackend } from "@/actions/predictionActions";
-import DashBoard from "@/components/DashBoard";
+import DashBoard from "@/components/dashboard/DashBoard";
 
 export default async function Page() {
   const initialData = await getDataFromBackend();

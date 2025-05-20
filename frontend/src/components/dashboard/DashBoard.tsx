@@ -9,8 +9,8 @@ import { StatisticsCard } from "@/components/StadisticsCard";
 import { PredictionCharts } from "@/components/PredictionCharts";
 import { addDataToBackend } from "@/actions/predictionActions";
 import { PredictionData } from "@/types/predictionData";
-import { DataTable } from "./data-table";
-import { columns } from "./dashboard/columns";
+import { DataTable } from "../data-table";
+import { columns } from "./columns";
 
 // Field names (backend keys) with user-friendly labels
 const fields: Record<keyof PredictionData, string> = {
