@@ -51,9 +51,14 @@ export default function Home() {
 
       {result && (
         <div className="mt-4 p-4 bg-green-100 rounded">
-          <p>🔮 Ventas: {result.Ventas.toFixed(2)}</p>
-          <p>💰 Beneficio Neto: {result.Beneficio_neto.toFixed(2)}</p>
-          <p>📈 Ingresos Totales: {result.Ingresos_totales.toFixed(2)}</p>
+          <p>🔮 Ventas: {parseFloat(result.Ventas).toFixed(2)}</p>
+          <p>
+            💰 Beneficio Neto: {parseFloat(result.Beneficio_neto).toFixed(2)}
+          </p>
+          <p>
+            📈 Ingresos Totales:{" "}
+            {parseFloat(result.Ingresos_totales_estimado).toFixed(2)}
+          </p>
         </div>
       )}
     </main>
