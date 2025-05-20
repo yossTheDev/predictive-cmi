@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from backend.models.predict import predict_all
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
-
+from fastapi.responses import JSONResponse
 from backend.models.train import train_model
 
 app = FastAPI()
@@ -86,3 +86,19 @@ def add_data(data: PredictionInput):
     train_model()
 
     return new_row
+
+
+@app.get("/data")
+def get_data():
+    try:
+        df = pd.read_csv("data.csv")
+        return df.to_dict(orient="records")
+    except FileNotFoundError:
+        return JSONResponse(
+            status_code=404,
+            content={"error": "📂 The file data.csv does not exist yet.",}
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=500, content={"error": f"💥 Error reading the file: {str(e)}"}
+        )
