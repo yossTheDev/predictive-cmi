@@ -4,18 +4,16 @@ import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { PredictionResult } from "@/types/result";
 
-type Row = {
-  result: PredictionResult | null;
-};
-
 interface StatisticsCardProps {
-  rows: Row[];
+  rows: PredictionResult[];
 }
 
 export function StatisticsCard({ rows }: StatisticsCardProps) {
-  const validResults = rows
-    .map((r) => r.result)
-    .filter((r): r is PredictionResult => r !== null);
+  const validResults = rows.map((r) => ({
+    Ventas: r!.Ventas,
+    Ingresos_totales_final: r!.Ingresos_totales_final,
+    Beneficio_neto: r!.Beneficio_neto,
+  }));
 
   if (validResults.length === 0) {
     return (
@@ -28,7 +26,6 @@ export function StatisticsCard({ rows }: StatisticsCardProps) {
     );
   }
 
-  // Función para calcular promedio de un campo numérico
   const average = (key: keyof PredictionResult) =>
     validResults.reduce((sum, r) => sum + r[key], 0) / validResults.length;
 
