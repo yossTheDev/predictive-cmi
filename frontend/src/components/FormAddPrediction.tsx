@@ -4,7 +4,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
 import { addDataToBackend } from "@/actions/predictionActions";
 
 // Etiquetas para mostrar en el formulario
@@ -89,10 +88,7 @@ export function FormAddPrediction({ onAddRow }: Props) {
   };
 
   return (
-    <div className="mt-8 p-6 border rounded-lg shadow-md max-w-3xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <PlusCircle className="w-5 h-5" /> Agregar nueva fila
-      </h2>
+    <div className="">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {Object.keys(fields).map((key) => (
           <div key={key} className="flex flex-col">

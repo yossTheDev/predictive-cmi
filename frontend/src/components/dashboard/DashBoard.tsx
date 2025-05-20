@@ -6,7 +6,7 @@ import { StatisticsCard } from "@/components/StadisticsCard";
 import { PredictionCharts } from "@/components/PredictionCharts";
 import { DataTable } from "../data-table";
 import { columns } from "./columns";
-import { FormAddPrediction } from "../FormAddPrediction";
+import { Header } from "../Header";
 
 export default function DashBoard({ initialData }: { initialData: any[] }) {
   const [rows, setRows] = useState(initialData || []);
@@ -17,15 +17,12 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
 
   return (
     <main className="max-w-8xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        📊 Predicción de KPIs
-      </h1>
+      <Header onAddRow={handleAddRow} />
 
       <div className="grid md:grid-cols-2">
         {/* Table & Form */}
         <div className="grid grid-cols-1 grid-rows-2 gap-4">
           <DataTable columns={columns} data={rows} />
-          <FormAddPrediction onAddRow={handleAddRow} />
         </div>
 
         {/* Statistics and Charts */}
