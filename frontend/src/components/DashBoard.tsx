@@ -4,20 +4,13 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { PlusCircle } from "lucide-react";
 import { StatisticsCard } from "@/components/StadisticsCard";
 import { PredictionCharts } from "@/components/PredictionCharts";
 import { addDataToBackend } from "@/actions/predictionActions";
 import { PredictionData } from "@/types/predictionData";
+import { DataTable } from "./data-table";
+import { columns } from "./dashboard/columns";
 
 // Field names (backend keys) with user-friendly labels
 const fields: Record<keyof PredictionData, string> = {
@@ -79,54 +72,7 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
       <div className="grid md:grid-cols-2">
         {/* Table */}
         <div>
-          <Table>
-            <TableCaption>Datos ingresados y resultados obtenidos</TableCaption>
-            <TableHeader>
-              <TableRow>
-                {Object.keys(fields).map((key) => (
-                  <TableHead key={key} className="min-w-[160px] text-xs">
-                    {fields[key]}
-                  </TableHead>
-                ))}
-                <TableHead className="min-w-[200px]">Resultado</TableHead>
-              </TableRow>
-            </TableHeader>
-
-            <TableBody>
-              {rows.length === 0 && (
-                <TableRow>
-                  <TableCell
-                    colSpan={Object.keys(fields).length + 1}
-                    className="text-center text-xs p-4"
-                  >
-                    No hay datos aún. Agrega uno abajo.
-                  </TableCell>
-                </TableRow>
-              )}
-
-              {rows.map((row, index) => (
-                <TableRow key={index}>
-                  {Object.keys(fields).map((key) => (
-                    <TableCell key={key} className="text-xs">
-                      {row[key]}
-                    </TableCell>
-                  ))}
-                  <TableCell className="text-xs space-y-1">
-                    {row.Ventas && (
-                      <>
-                        <p>🔮 Ventas: {row.Ventas.toFixed(2)}</p>
-                        <p>💰 Beneficio: {row.Beneficio_neto.toFixed(2)}</p>
-                        <p>
-                          📈 Ingresos Estimados:{" "}
-                          {row.Ingresos_totales_final.toFixed(2)}
-                        </p>
-                      </>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <DataTable columns={columns} data={rows} />
 
           {/* Card para agregar nueva fila */}
           <div className="mt-8 p-6 border rounded-lg shadow-md max-w-3xl mx-auto">
@@ -137,12 +83,12 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
               {Object.keys(fields).map((key) => (
                 <div key={key} className="flex flex-col">
                   <label htmlFor={key} className="mb-1 font-medium">
-                    {fields[key]}
+                    {fields[key as keyof PredictionData]}
                   </label>
                   <Input
                     id={key}
                     type="number"
-                    value={newRow[key]}
+                    value={newRow[key as keyof typeof newRow]}
                     onChange={(e) => handleInputChange(key, e.target.value)}
                   />
                 </div>
