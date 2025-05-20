@@ -21,7 +21,7 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
 
       <div className="grid md:grid-cols-2">
         {/* Table & Form */}
-        <div className="grid grid-cols-1 grid-rows-2 gap-4">
+        <div className="grid bg-slate-400 grid-cols-1 gap-4">
           <DataTable columns={columns} data={rows} />
         </div>
 
