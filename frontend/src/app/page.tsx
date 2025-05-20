@@ -13,22 +13,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { PlusCircle } from "lucide-react";
 
-const defaultRow = {
-  Precio: 130,
-  Costo: 45,
-  Rotacion: 6.5,
-  Marketing: 15,
-  Ingresos_totales: 14000,
-  Costos_operativos: 4800,
-  Precio_competencia: 108,
-  Demanda_sectorial: 1.55,
-  Tasa_CUP_USD: 350,
+// Field names (backend keys) with user-friendly labels
+const fields: Record<string, string> = {
+  PRECIO: "Precio del producto",
+  COSTO: "Costo unitario",
+  ROTACION: "Rotación de inventario",
+  MARKETING: "Gasto en marketing",
+  INGRESOS_TOTALES: "Ingresos totales actuales",
+  COSTOS_OPERATIVOS: "Costos operativos",
+  PRECIO_COMPETENCIA: "Precio de la competencia",
+  DEMANDA_SECTORIAL: "Demanda sectorial",
+  TASA_CAMBIO: "Tasa CUP/USD",
 };
 
+// Default editable row (backend field names)
+const defaultRow: Record<string, number> = {
+  PRECIO: 130,
+  COSTO: 45,
+  ROTACION: 6.5,
+  MARKETING: 15,
+  INGRESOS_TOTALES: 14000,
+  COSTOS_OPERATIVOS: 4800,
+  PRECIO_COMPETENCIA: 108,
+  DEMANDA_SECTORIAL: 1.55,
+  TASA_CAMBIO: 350,
+};
+
+type Row = typeof defaultRow & { result: any | null };
+
 export default function Home() {
-  const [rows, setRows] = useState([{ ...defaultRow, result: null }]);
+  const [rows, setRows] = useState<Row[]>([{ ...defaultRow, result: null }]);
 
   const handleChange = (index: number, key: string, value: string) => {
     const updatedRows = [...rows];
@@ -36,42 +52,42 @@ export default function Home() {
     setRows(updatedRows);
   };
 
-  const handlePredict = async (index: number) => {
-    const { result, ...inputData } = rows[index];
+  const handleAddRow = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/predict", inputData);
-      const updatedRows = [...rows];
-      updatedRows[index].result = res.data;
-      setRows(updatedRows);
+      const { result, ...editRow } = defaultRow;
+      console.log("editRow", editRow);
+      const { data } = await axios.post(
+        "http://localhost:8000/predict",
+        editRow
+      );
+      setRows([...rows, { ...editRow, result: data }]);
     } catch (err) {
       console.error("Error al predecir:", err);
     }
   };
 
-  const handleAddRow = () => {
-    setRows([...rows, { ...defaultRow, result: null }]);
-  };
-
   return (
-    <main className="max-w-6xl mx-auto p-6">
+    <main className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">
         📊 Predicción de KPIs
       </h1>
 
-      <Button onClick={handleAddRow} className="mb-4">
-        ➕ Agregar Fila
+      <Button onClick={handleAddRow} className="mb-4 flex gap-2 items-center">
+        <PlusCircle className="w-5 h-5" />
+        Agregar Fila
       </Button>
 
       <Table>
-        <TableCaption>Introduce los datos y obtén la predicción.</TableCaption>
+        <TableCaption>
+          Introduce los datos y obtén la predicción automáticamente.
+        </TableCaption>
         <TableHeader>
           <TableRow>
-            {Object.keys(defaultRow).map((key) => (
-              <TableHead key={key} className="min-w-[120px]">
-                {key}
+            {Object.keys(fields).map((key) => (
+              <TableHead key={key} className="min-w-[160px]">
+                {fields[key]}
               </TableHead>
             ))}
-            <TableHead className="min-w-[100px]">Acciones</TableHead>
             <TableHead className="min-w-[200px]">Resultado</TableHead>
           </TableRow>
         </TableHeader>
@@ -79,19 +95,16 @@ export default function Home() {
         <TableBody>
           {rows.map((row, index) => (
             <TableRow key={index}>
-              {Object.entries(defaultRow).map(([key]) => (
+              {Object.keys(fields).map((key) => (
                 <TableCell key={key}>
                   <Input
                     type="number"
                     value={row[key]}
                     onChange={(e) => handleChange(index, key, e.target.value)}
-                    className="w-28"
+                    className="w-32"
                   />
                 </TableCell>
               ))}
-              <TableCell>
-                <Button onClick={() => handlePredict(index)}>Predecir</Button>
-              </TableCell>
               <TableCell className="text-xs space-y-1">
                 {row.result && (
                   <>

@@ -16,15 +16,15 @@ app.add_middleware(
 
 
 class PredictionInput(BaseModel):
-    Precio: float
-    Costo: float
-    Rotacion: float
-    Marketing: float
-    Ingresos_totales: float
-    Costos_operativos: float
-    Precio_competencia: float
-    Demanda_sectorial: float
-    Tasa_CUP_USD: float
+    PRECIO: float
+    COSTO: float
+    ROTACION: float
+    MARKETING: float
+    INGRESOS_TOTALES: float
+    COSTOS_OPERATIVOS: float
+    PRECIO_COMPETENCIA: float
+    DEMANDA_SECTORIAL: float
+    TASA_CAMBIO: float
 
 
 @app.get("/")
@@ -35,14 +35,14 @@ def read_root():
 @app.post("/predict")
 def predict_endpoint(data: PredictionInput):
     result = predict_all(
-        Precio=data.Precio,
-        Costo=data.Costo,
-        Rotacion=data.Rotacion,
-        Marketing=data.Marketing,
-        Ingresos_totales=data.Ingresos_totales,
-        Costos_operativos=data.Costos_operativos,
-        Precio_competencia=data.Precio_competencia,
-        Demanda_sectorial=data.Demanda_sectorial,
-        Tasa_CUP_USD=data.Tasa_CUP_USD,
+        Precio=data.PRECIO,
+        Costo=data.COSTO,
+        Rotacion=data.ROTACION,
+        Marketing=data.MARKETING,
+        Ingresos_totales=data.INGRESOS_TOTALES,
+        Costos_operativos=data.COSTOS_OPERATIVOS,
+        Precio_competencia=data.PRECIO_COMPETENCIA,
+        Demanda_sectorial=data.DEMANDA_SECTORIAL,
+        Tasa_CUP_USD=data.TASA_CAMBIO,
     )
     return result
