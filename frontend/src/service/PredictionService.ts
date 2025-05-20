@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PredictionData } from "@/types/predictionData";
 import axios from "axios";
 
-const BACKEND_URL = "http://localhost:8080/";
+const BACKEND_URL = "http://localhost:8000/";
 
 export const PredictionService = {
-    async getPrediction(data: PredictionData[]) {
+    async getPrediction(data: any) {
         try {
             const response = await axios.post(`${BACKEND_URL}predict`, data, {
                 headers: {
@@ -18,7 +19,7 @@ export const PredictionService = {
         }
     },
 
-    async addData(data: PredictionData[]) {
+    async addData(data: any) {
         try {
             const response = await axios.post(`${BACKEND_URL}add-data`, data, {
                 headers: {

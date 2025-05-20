@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +16,7 @@ import { PlusCircle } from "lucide-react";
 import { PredictionResult } from "@/types/result";
 import { StatisticsCard } from "@/components/StadisticsCard";
 import { PredictionCharts } from "@/components/PredictionCharts";
+import { PredictionService } from "@/service/PredictionService";
 
 // Field names (backend keys) with user-friendly labels
 const fields: Record<string, string> = {
@@ -63,10 +63,9 @@ export default function Home() {
   // Agregar nueva fila usando los valores del card
   const handleAddRow = async () => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:8000/add-data",
-        newRow
-      );
+      // Usar el servicio para agregar datos
+
+      const data = await PredictionService.addData(newRow);
 
       console.log("Predicción obtenida:", data);
 
