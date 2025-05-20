@@ -11,12 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
-
-type PredictionResult = {
-  Ventas: number;
-  Beneficio_neto: number;
-  Ingresos_totales_estimado: number;
-};
+import { PredictionResult } from "@/types/result";
 
 type Row = {
   result: PredictionResult | null;
@@ -49,7 +44,7 @@ export function PredictionCharts({ rows }: PredictionLineChartsProps) {
           name: `Dato ${index + 1}`,
           ventas: row.result.Ventas,
           beneficio: row.result.Beneficio_neto,
-          ingresos: row.result.Ingresos_totales_estimado,
+          ingresos: row.result.Ingresos_totales_final,
         }
     )
     .filter(Boolean) as {

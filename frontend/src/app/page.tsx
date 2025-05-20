@@ -64,9 +64,12 @@ export default function Home() {
   const handleAddRow = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/predict",
+        "http://localhost:8000/add-data",
         newRow
       );
+
+      console.log("Predicción obtenida:", data);
+
       setRows((prev) => [...prev, { ...newRow, result: data }]);
       // Resetear inputs a valores por defecto después de agregar
       setNewRow({ ...defaultRow });
@@ -125,7 +128,7 @@ export default function Home() {
                         </p>
                         <p>
                           📈 Ingresos Estimados:{" "}
-                          {row.result.Ingresos_totales_estimado.toFixed(2)}
+                          {row.result.Ingresos_totales_final.toFixed(2)}
                         </p>
                       </>
                     )}

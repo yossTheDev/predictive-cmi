@@ -2,12 +2,7 @@
 
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
-type PredictionResult = {
-  Ventas: number;
-  Beneficio_neto: number;
-  Ingresos_totales_estimado: number;
-};
+import { PredictionResult } from "@/types/result";
 
 type Row = {
   result: PredictionResult | null;
@@ -51,7 +46,7 @@ export function StatisticsCard({ rows }: StatisticsCardProps) {
           </li>
           <li>
             📈 Promedio de Ingresos Estimados:{" "}
-            {average("Ingresos_totales_estimado").toFixed(2)}
+            {average("Ingresos_totales_final").toFixed(2)}
           </li>
         </ul>
       </CardContent>
