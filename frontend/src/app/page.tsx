@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PlusCircle } from "lucide-react";
+import { PredictionResult } from "@/types/result";
 
 // Field names (backend keys) with user-friendly labels
 const fields: Record<string, string> = {
@@ -41,7 +42,7 @@ const defaultRow: Record<string, number> = {
   TASA_CAMBIO: 350,
 };
 
-type Row = typeof defaultRow & { result: any | null };
+type Row = typeof defaultRow & { result: PredictionResult | null };
 
 export default function Home() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -111,16 +112,11 @@ export default function Home() {
               <TableCell className="text-xs space-y-1">
                 {row.result && (
                   <>
-                    <p>🔮 Ventas: {parseFloat(row.result.Ventas).toFixed(2)}</p>
-                    <p>
-                      💰 Beneficio:{" "}
-                      {parseFloat(row.result.Beneficio_neto).toFixed(2)}
-                    </p>
+                    <p>🔮 Ventas: {row.result.Ventas.toFixed(2)}</p>
+                    <p>💰 Beneficio: {row.result.Beneficio_neto.toFixed(2)}</p>
                     <p>
                       📈 Ingresos Estimados:{" "}
-                      {parseFloat(row.result.Ingresos_totales_estimado).toFixed(
-                        2
-                      )}
+                      {row.result.Ingresos_totales_estimado.toFixed(2)}
                     </p>
                   </>
                 )}
