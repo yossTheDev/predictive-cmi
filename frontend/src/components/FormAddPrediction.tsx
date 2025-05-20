@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { addDataToBackend } from "@/actions/predictionActions";
-import { PredictionData } from "@/types/predictionData";
 
-const fields: Record<keyof PredictionData, string> = {
+// Etiquetas para mostrar en el formulario
+const fields: Record<string, string> = {
   Precio_promedio: "Precio del producto",
   Costos: "Costo unitario",
   Rotacion: "Rotación de inventario",
@@ -18,11 +18,22 @@ const fields: Record<keyof PredictionData, string> = {
   Precio_competencia: "Precio de la competencia",
   Demanda_sectorial: "Demanda sectorial",
   Tasa_CUP_USD: "Tasa CUP/USD",
-  Ventas: "Ventas",
-  Beneficio_neto: "Beneficio neto",
-  Ingresos_totales_final: "Ingresos totales estimados",
 };
 
+// Mapeo de claves frontend → backend
+const keyMap: Record<string, string> = {
+  Precio_promedio: "PRECIO",
+  Costos: "COSTO",
+  Rotacion: "ROTACION",
+  Marketing: "MARKETING",
+  Ingresos_totales: "INGRESOS_TOTALES",
+  Costos_operativos: "COSTOS_OPERATIVOS",
+  Precio_competencia: "PRECIO_COMPETENCIA",
+  Demanda_sectorial: "DEMANDA_SECTORIAL",
+  Tasa_CUP_USD: "TASA_CAMBIO",
+};
+
+// Valores predeterminados backend
 const defaultRow: Record<string, number> = {
   PRECIO: 130,
   COSTO: 45,
@@ -40,7 +51,13 @@ type Props = {
 };
 
 export function FormAddPrediction({ onAddRow }: Props) {
-  const [newRow, setNewRow] = useState<typeof defaultRow>({ ...defaultRow });
+  const [newRow, setNewRow] = useState<Record<string, number>>(() => {
+    const initial: Record<string, number> = {};
+    Object.entries(keyMap).forEach(([frontendKey, backendKey]) => {
+      initial[frontendKey] = defaultRow[backendKey];
+    });
+    return initial;
+  });
 
   const handleInputChange = (key: string, value: string) => {
     setNewRow((prev) => ({
@@ -51,9 +68,21 @@ export function FormAddPrediction({ onAddRow }: Props) {
 
   const handleAddRow = async () => {
     try {
-      const result = await addDataToBackend(newRow as any);
-      onAddRow({ ...newRow, result });
-      setNewRow({ ...defaultRow });
+      const dataForBackend: Record<string, number> = {};
+      Object.entries(newRow).forEach(([frontendKey, value]) => {
+        const backendKey = keyMap[frontendKey];
+        dataForBackend[backendKey] = value;
+      });
+
+      const result = await addDataToBackend(dataForBackend as any);
+      onAddRow({ ...dataForBackend, result });
+
+      // Reset form a valores por defecto
+      const resetRow: Record<string, number> = {};
+      Object.entries(keyMap).forEach(([frontendKey, backendKey]) => {
+        resetRow[frontendKey] = defaultRow[backendKey];
+      });
+      setNewRow(resetRow);
     } catch (err) {
       console.error("Error al agregar fila:", err);
     }
@@ -68,12 +97,12 @@ export function FormAddPrediction({ onAddRow }: Props) {
         {Object.keys(fields).map((key) => (
           <div key={key} className="flex flex-col">
             <label htmlFor={key} className="mb-1 font-medium">
-              {fields[key as keyof PredictionData]}
+              {fields[key]}
             </label>
             <Input
               id={key}
               type="number"
-              value={newRow[key as keyof typeof newRow]}
+              value={newRow[key] ?? 0}
               onChange={(e) => handleInputChange(key, e.target.value)}
             />
           </div>
