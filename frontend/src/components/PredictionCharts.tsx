@@ -13,12 +13,8 @@ import {
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { PredictionResult } from "@/types/result";
 
-type Row = {
-  result: PredictionResult | null;
-};
-
 interface PredictionLineChartsProps {
-  rows: Row[];
+  rows: PredictionResult[];
 }
 
 const chartConfig = {
@@ -40,11 +36,11 @@ export function PredictionCharts({ rows }: PredictionLineChartsProps) {
   const chartData = rows
     .map(
       (row, index) =>
-        row.result && {
+        row.Ventas && {
           name: `Dato ${index + 1}`,
-          ventas: row.result.Ventas,
-          beneficio: row.result.Beneficio_neto,
-          ingresos: row.result.Ingresos_totales_final,
+          ventas: row.Ventas,
+          beneficio: row.Beneficio_neto,
+          ingresos: row.Ingresos_totales_final,
         }
     )
     .filter(Boolean) as {
