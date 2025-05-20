@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/table";
 import { PlusCircle } from "lucide-react";
 import { PredictionResult } from "@/types/result";
+import { StatisticsCard } from "@/components/StadisticsCard";
 
 // Field names (backend keys) with user-friendly labels
 const fields: Record<string, string> = {
@@ -78,6 +79,8 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-6 text-center">
         📊 Predicción de KPIs
       </h1>
+
+      <StatisticsCard rows={rows} />
 
       <Table>
         <TableCaption>Datos ingresados y resultados obtenidos</TableCaption>
