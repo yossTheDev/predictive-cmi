@@ -12,12 +12,7 @@ import {
 import { Plus } from "lucide-react";
 import { FormAddPrediction } from "./FormAddPrediction";
 
-type HeaderProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onAddRow: (newData: any) => void;
-};
-
-export function Header({ onAddRow }: HeaderProps) {
+export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -36,8 +31,7 @@ export function Header({ onAddRow }: HeaderProps) {
             <DialogTitle>Agregar nuevos datos</DialogTitle>
           </DialogHeader>
           <FormAddPrediction
-            onAddRow={(data) => {
-              onAddRow(data);
+            onAddRow={() => {
               setOpen(false);
             }}
           />
