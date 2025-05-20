@@ -28,7 +28,7 @@ const fields: Record<string, string> = {
   TASA_CAMBIO: "Tasa CUP/USD",
 };
 
-// Default editable row (backend field names)
+// Default values for the inputs in the card
 const defaultRow: Record<string, number> = {
   PRECIO: 130,
   COSTO: 45,
@@ -44,23 +44,29 @@ const defaultRow: Record<string, number> = {
 type Row = typeof defaultRow & { result: any | null };
 
 export default function Home() {
-  const [rows, setRows] = useState<Row[]>([{ ...defaultRow, result: null }]);
+  const [rows, setRows] = useState<Row[]>([]);
 
-  const handleChange = (index: number, key: string, value: string) => {
-    const updatedRows = [...rows];
-    updatedRows[index][key] = parseFloat(value);
-    setRows(updatedRows);
+  // Estado para el formulario de nuevo dato
+  const [newRow, setNewRow] = useState<typeof defaultRow>({ ...defaultRow });
+
+  // Actualizar valor de input del card
+  const handleInputChange = (key: string, value: string) => {
+    setNewRow((prev) => ({
+      ...prev,
+      [key]: value === "" ? 0 : parseFloat(value),
+    }));
   };
 
+  // Agregar nueva fila usando los valores del card
   const handleAddRow = async () => {
     try {
-      const { result, ...editRow } = defaultRow;
-      console.log("editRow", editRow);
       const { data } = await axios.post(
         "http://localhost:8000/predict",
-        editRow
+        newRow
       );
-      setRows([...rows, { ...editRow, result: data }]);
+      setRows((prev) => [...prev, { ...newRow, result: data }]);
+      // Resetear inputs a valores por defecto después de agregar
+      setNewRow({ ...defaultRow });
     } catch (err) {
       console.error("Error al predecir:", err);
     }
@@ -72,15 +78,8 @@ export default function Home() {
         📊 Predicción de KPIs
       </h1>
 
-      <Button onClick={handleAddRow} className="mb-4 flex gap-2 items-center">
-        <PlusCircle className="w-5 h-5" />
-        Agregar Fila
-      </Button>
-
       <Table>
-        <TableCaption>
-          Introduce los datos y obtén la predicción automáticamente.
-        </TableCaption>
+        <TableCaption>Datos ingresados y resultados obtenidos</TableCaption>
         <TableHeader>
           <TableRow>
             {Object.keys(fields).map((key) => (
@@ -93,17 +92,21 @@ export default function Home() {
         </TableHeader>
 
         <TableBody>
+          {rows.length === 0 && (
+            <TableRow>
+              <TableCell
+                colSpan={Object.keys(fields).length + 1}
+                className="text-center p-4"
+              >
+                No hay datos aún. Agrega uno abajo.
+              </TableCell>
+            </TableRow>
+          )}
+
           {rows.map((row, index) => (
             <TableRow key={index}>
               {Object.keys(fields).map((key) => (
-                <TableCell key={key}>
-                  <Input
-                    type="number"
-                    value={row[key]}
-                    onChange={(e) => handleChange(index, key, e.target.value)}
-                    className="w-32"
-                  />
-                </TableCell>
+                <TableCell key={key}>{row[key]}</TableCell>
               ))}
               <TableCell className="text-xs space-y-1">
                 {row.result && (
@@ -126,6 +129,31 @@ export default function Home() {
           ))}
         </TableBody>
       </Table>
+
+      {/* Card para agregar nueva fila */}
+      <div className="mt-8 p-6 border rounded-lg shadow-md max-w-3xl mx-auto">
+        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <PlusCircle className="w-5 h-5" /> Agregar nueva fila
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {Object.keys(fields).map((key) => (
+            <div key={key} className="flex flex-col">
+              <label htmlFor={key} className="mb-1 font-medium">
+                {fields[key]}
+              </label>
+              <Input
+                id={key}
+                type="number"
+                value={newRow[key]}
+                onChange={(e) => handleInputChange(key, e.target.value)}
+              />
+            </div>
+          ))}
+        </div>
+        <Button onClick={handleAddRow} className="mt-6 w-full">
+          Agregar fila
+        </Button>
+      </div>
     </main>
   );
 }
