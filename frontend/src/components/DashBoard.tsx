@@ -17,18 +17,22 @@ import { PlusCircle } from "lucide-react";
 import { StatisticsCard } from "@/components/StadisticsCard";
 import { PredictionCharts } from "@/components/PredictionCharts";
 import { addDataToBackend } from "@/actions/predictionActions";
+import { PredictionData } from "@/types/predictionData";
 
 // Field names (backend keys) with user-friendly labels
-const fields: Record<string, string> = {
-  PRECIO: "Precio del producto",
-  COSTO: "Costo unitario",
-  ROTACION: "Rotación de inventario",
-  MARKETING: "Gasto en marketing",
-  INGRESOS_TOTALES: "Ingresos totales actuales",
-  COSTOS_OPERATIVOS: "Costos operativos",
-  PRECIO_COMPETENCIA: "Precio de la competencia",
-  DEMANDA_SECTORIAL: "Demanda sectorial",
-  TASA_CAMBIO: "Tasa CUP/USD",
+const fields: Record<keyof PredictionData, string> = {
+  Precio_promedio: "Precio del producto",
+  Costos: "Costo unitario",
+  Rotacion: "Rotación de inventario",
+  Marketing: "Gasto en marketing",
+  Ingresos_totales: "Ingresos totales actuales",
+  Costos_operativos: "Costos operativos",
+  Precio_competencia: "Precio de la competencia",
+  Demanda_sectorial: "Demanda sectorial",
+  Tasa_CUP_USD: "Tasa CUP/USD",
+  Ventas: "Ventas",
+  Beneficio_neto: "Beneficio neto",
+  Ingresos_totales_final: "Ingresos totales estimados",
 };
 
 // Default values for the inputs in the card
@@ -104,11 +108,9 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
                 <TableRow key={index}>
                   {Object.keys(fields).map((key) => (
                     <TableCell key={key} className="text-xs">
-                      <p>{fields[key]}</p>
                       {row[key]}
                     </TableCell>
                   ))}
-
                   <TableCell className="text-xs space-y-1">
                     {row.Ventas && (
                       <>
