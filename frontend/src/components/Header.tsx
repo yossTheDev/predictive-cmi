@@ -17,7 +17,7 @@ export function Header() {
 
   return (
     <header className="w-full px-4 py-3 bg-white border-b shadow-sm flex justify-between items-center">
-      <h1 className="text-xl font-bold text-gray-800">Predicciones KPIs</h1>
+      <h1 className="text-xl font-bold text-gray-800">Predictive CMI</h1>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
