@@ -24,6 +24,7 @@ class PredictionInput(BaseModel):
     Costos_operativos: float
     Precio_competencia: float
     Demanda_sectorial: float
+    Tasa_CUP_USD: float
 
 
 @app.get("/")
@@ -42,6 +43,6 @@ def predict_endpoint(data: PredictionInput):
         Costos_operativos=data.Costos_operativos,
         Precio_competencia=data.Precio_competencia,
         Demanda_sectorial=data.Demanda_sectorial,
-        Tasa_CUP_USD=360,
+        Tasa_CUP_USD=data.Tasa_CUP_USD,
     )
     return result
