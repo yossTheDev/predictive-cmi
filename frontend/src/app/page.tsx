@@ -84,7 +84,7 @@ export default function Home() {
         <TableHeader>
           <TableRow>
             {Object.keys(fields).map((key) => (
-              <TableHead key={key} className="min-w-[160px]">
+              <TableHead key={key} className="min-w-[160px] text-xs">
                 {fields[key]}
               </TableHead>
             ))}
@@ -97,7 +97,7 @@ export default function Home() {
             <TableRow>
               <TableCell
                 colSpan={Object.keys(fields).length + 1}
-                className="text-center p-4"
+                className="text-center text-xs p-4"
               >
                 No hay datos aún. Agrega uno abajo.
               </TableCell>
@@ -107,7 +107,9 @@ export default function Home() {
           {rows.map((row, index) => (
             <TableRow key={index}>
               {Object.keys(fields).map((key) => (
-                <TableCell key={key}>{row[key]}</TableCell>
+                <TableCell key={key} className="text-xs">
+                  {row[key]}
+                </TableCell>
               ))}
               <TableCell className="text-xs space-y-1">
                 {row.result && (
