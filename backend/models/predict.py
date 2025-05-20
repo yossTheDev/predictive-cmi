@@ -19,6 +19,7 @@ def predict_all(
     Costos_operativos,
     Precio_competencia,
     Demanda_sectorial,
+    Tasa_CUP_USD,  # 👈 New parameter
 ):
     # Load trained multi-output regression model
     model = joblib.load("modelo_regresion.pkl")
@@ -35,6 +36,7 @@ def predict_all(
                 "Costos_operativos": Costos_operativos,
                 "Precio_competencia": Precio_competencia,
                 "Demanda_sectorial": Demanda_sectorial,
+                "Tasa_CUP_USD": Tasa_CUP_USD,
             }
         ]
     )
@@ -56,6 +58,9 @@ def predict_metric(*args, metric="Ventas", **kwargs):
 
 
 if __name__ == "__main__":
+    # Simulated example with current exchange rate
+    tasa_actual = 360  # Example exchange rate, replace with actual value
+
     predicciones = predict_all(
         Precio=135,
         Costo=48,
@@ -65,6 +70,7 @@ if __name__ == "__main__":
         Costos_operativos=4800,
         Precio_competencia=108,
         Demanda_sectorial=1.55,
+        Tasa_CUP_USD=tasa_actual,
     )
 
     print("🔮 Predicción completa:")

@@ -42,5 +42,6 @@ def predict_endpoint(data: PredictionInput):
         Costos_operativos=data.Costos_operativos,
         Precio_competencia=data.Precio_competencia,
         Demanda_sectorial=data.Demanda_sectorial,
+        Tasa_CUP_USD=360,
     )
     return result
