@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PredictionData } from "@/types/predictionData";
+import { PredictionDataRequest } from "@/types/predictionRequest";
 import axios from "axios";
 
 const BACKEND_URL = "http://localhost:8000/";
 
+
 export const PredictionService = {
-    async getPrediction(data: any) {
+    async getPrediction(data: PredictionDataRequest) {
         try {
             const response = await axios.post(`${BACKEND_URL}predict`, data, {
                 headers: {
@@ -19,7 +20,7 @@ export const PredictionService = {
         }
     },
 
-    async addData(data: any) {
+    async addData(data: PredictionDataRequest) {
         try {
             const response = await axios.post(`${BACKEND_URL}add-data`, data, {
                 headers: {

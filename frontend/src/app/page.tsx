@@ -64,8 +64,8 @@ export default function Home() {
   const handleAddRow = async () => {
     try {
       // Usar el servicio para agregar datos
-
-      const data = await PredictionService.addData(newRow);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const data = await PredictionService.addData(newRow as any);
 
       console.log("Predicción obtenida:", data);
 
