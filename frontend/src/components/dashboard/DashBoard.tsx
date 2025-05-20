@@ -16,17 +16,17 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
   };
 
   return (
-    <main className="max-w-8xl mx-auto p-6">
+    <main className="my-auto mx-8 h-fit flex flex-col  box-content p-12 rounded-xl border border-neutral-200">
       <Header onAddRow={handleAddRow} />
 
-      <div className="grid md:grid-cols-2">
+      <div className="flex">
         {/* Table & Form */}
-        <div className="grid bg-slate-400 grid-cols-1 gap-4">
+        <div className="grid h-full grid-cols-1 gap-4">
           <DataTable columns={columns} data={rows} />
         </div>
 
         {/* Statistics and Charts */}
-        <div className="grid grid-cols-1 grid-rows-2 gap-4">
+        <div className="flex flex-col gap-4">
           <StatisticsCard rows={rows} />
           <PredictionCharts rows={rows} />
         </div>
