@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { addDataToBackend } from "@/actions/predictionActions";
 
-// Etiquetas para mostrar en el formulario
 const fields: Record<string, string> = {
   Precio_promedio: "Precio del producto",
   Costos: "Costo unitario",
@@ -19,7 +18,6 @@ const fields: Record<string, string> = {
   Tasa_CUP_USD: "Tasa CUP/USD",
 };
 
-// Mapeo de claves frontend → backend
 const keyMap: Record<string, string> = {
   Precio_promedio: "PRECIO",
   Costos: "COSTO",
@@ -32,7 +30,6 @@ const keyMap: Record<string, string> = {
   Tasa_CUP_USD: "TASA_CAMBIO",
 };
 
-// Valores predeterminados backend
 const defaultRow: Record<string, number> = {
   PRECIO: 130,
   COSTO: 45,
@@ -76,7 +73,6 @@ export function FormAddPrediction({ onAddRow }: Props) {
       const result = await addDataToBackend(dataForBackend as any);
       onAddRow({ ...dataForBackend, result });
 
-      // Reset form a valores por defecto
       const resetRow: Record<string, number> = {};
       Object.entries(keyMap).forEach(([frontendKey, backendKey]) => {
         resetRow[frontendKey] = defaultRow[backendKey];
