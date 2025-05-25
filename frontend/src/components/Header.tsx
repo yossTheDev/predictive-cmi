@@ -16,7 +16,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="w-full px-4 py-3 bg-white border-b shadow-sm flex justify-between items-center">
+    <header className="w-full px-8 py-3 bg-white border-b shadow-sm flex justify-between items-center">
       <h1 className="text-xl font-bold text-gray-800">Predictive CMI</h1>
 
       <Dialog open={open} onOpenChange={setOpen}>
