@@ -27,7 +27,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-screen flex flex-col overflow-x-hidden`}
       >
-        <div>
+        <div className="flex flex-col w-full">
           <h1 className="text-4xl font-bold text-center mt-10">
             Predictive CMI
           </h1>

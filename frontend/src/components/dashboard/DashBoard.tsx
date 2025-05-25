@@ -25,7 +25,10 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="default" className="flex mx-auto items-center gap-2">
+          <Button
+            variant="default"
+            className="flex mx-auto mt-4 items-center gap-2"
+          >
             <Plus className="w-4 h-4" />
             Agregar fila
           </Button>
@@ -42,16 +45,16 @@ export default function DashBoard({ initialData }: { initialData: any[] }) {
         </DialogContent>
       </Dialog>
 
-      <main className="my-auto mt-10 h-fit flex flex-col p-2 border border-neutral-200">
-        <div className="flex gap-8 p-4">
+      <main className="my-auto rounded-xl mx-8 mb-8 p-4 items-center justify-center mt-10 h-fit flex flex-col border border-neutral-200">
+        <div className="grid gap-4 grid-cols-2">
           {/* Table & Form */}
-          <div className="flex flex-col w-1/2 gap-4 rounded-xl border border-neutral-200 h-fit p-8">
+          <div className="flex flex-col w-full gap-4 rounded-xl border border-neutral-200 h-fit p-8">
             <h3 className="text-2xl font-bold">Datos</h3>
             <DataTable columns={columns} data={rows} />
           </div>
 
           {/* Statistics and Charts */}
-          <div className="flex flex-col w-1/2 gap-4">
+          <div className="flex flex-col w-full gap-4">
             <StatisticsCard rows={rows} />
 
             <div className="flex flex-col w-full gap-4 rounded-xl border border-neutral-200 h-fit p-8">
