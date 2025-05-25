@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +27,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-screen flex flex-col overflow-x-hidden`}
       >
-        <Header />
         <div>
           <h1 className="text-4xl font-bold text-center mt-10">
             Predictive CMI
@@ -38,6 +36,17 @@ export default function RootLayout({
           </p>
           {children}
         </div>
+
+        <footer>
+          <div className="flex justify-center items-center gap-2 mt-auto p-4">
+            <p className="text-sm text-muted-foreground">
+              © 2025 Predictive CMI. Todos los derechos reservados.
+            </p>
+            <p className="text-muted-foreground">
+              Creado por Yoannis Sánchez Soto & Yisel Pupo Batista{" "}
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   );

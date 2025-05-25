@@ -5,32 +5,65 @@ import { StatisticsCard } from "@/components/StadisticsCard";
 import { PredictionCharts } from "@/components/PredictionCharts";
 import { DataTable } from "../data-table";
 import { columns } from "./columns";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import { FormAddPrediction } from "../FormAddPrediction";
 
 export default function DashBoard({ initialData }: { initialData: any[] }) {
+  const [open, setOpen] = useState(false);
   const rows = initialData;
 
   return (
-    <main className="my-auto mt-10 h-fit flex flex-col p-2 border border-neutral-200">
-      <div className="flex gap-8 p-4">
-        {/* Table & Form */}
-        <div className="flex flex-col w-1/2 gap-4 rounded-xl border border-neutral-200 h-fit p-8">
-          <h3 className="text-2xl font-bold">Datos</h3>
-          <DataTable columns={columns} data={rows} />
-        </div>
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="default" className="flex mx-auto items-center gap-2">
+            <Plus className="w-4 h-4" />
+            Agregar fila
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Agregar nuevos datos</DialogTitle>
+          </DialogHeader>
+          <FormAddPrediction
+            onAddRow={() => {
+              setOpen(false);
+            }}
+          />
+        </DialogContent>
+      </Dialog>
 
-        {/* Statistics and Charts */}
-        <div className="flex flex-col w-1/2 gap-4">
-          <StatisticsCard rows={rows} />
+      <main className="my-auto mt-10 h-fit flex flex-col p-2 border border-neutral-200">
+        <div className="flex gap-8 p-4">
+          {/* Table & Form */}
+          <div className="flex flex-col w-1/2 gap-4 rounded-xl border border-neutral-200 h-fit p-8">
+            <h3 className="text-2xl font-bold">Datos</h3>
+            <DataTable columns={columns} data={rows} />
+          </div>
 
-          <div className="flex flex-col w-full gap-4 rounded-xl border border-neutral-200 h-fit p-8">
-            <h3 className="text-2xl font-bold">Gráficas</h3>
-            <p className="text-sm text-muted-foreground">
-              Gráficas de Predicción de Ventas, Beneficios e Ingresos
-            </p>
-            <PredictionCharts rows={rows} />
+          {/* Statistics and Charts */}
+          <div className="flex flex-col w-1/2 gap-4">
+            <StatisticsCard rows={rows} />
+
+            <div className="flex flex-col w-full gap-4 rounded-xl border border-neutral-200 h-fit p-8">
+              <h3 className="text-2xl font-bold">Gráficas</h3>
+              <p className="text-sm text-muted-foreground">
+                Gráficas de Predicción de Ventas, Beneficios e Ingresos
+              </p>
+              <PredictionCharts rows={rows} />
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
