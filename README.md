@@ -52,8 +52,8 @@ Este es un proyecto demostrativo para la **predicción de KPIs financieros** en 
 
 ## 📸 Capturas de pantalla
 
-> Aquí puedes colocar screenshots si deseas. Por ejemplo:
-> ![Formulario de entrada](./screenshots/form.png)
+> ![Pagina Principal](./docs/screenshot-1.png)
+> ![Estadísticas](./docs/screenshot-2.png)
 
 ---
 
