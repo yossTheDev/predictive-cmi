@@ -29,7 +29,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-screen flex flex-col overflow-x-hidden`}
       >
         <Header />
-        {children}
+        <div>
+          <h1 className="text-4xl font-bold text-center mt-10">
+            Predictive CMI
+          </h1>
+          <p className="text-sm text-muted-foreground text-center px-8">
+            Predicción de Ventas, Beneficios e Ingresos Totales
+          </p>
+          {children}
+        </div>
       </body>
     </html>
   );

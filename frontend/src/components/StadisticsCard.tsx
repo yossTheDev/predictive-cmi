@@ -32,8 +32,12 @@ export function StatisticsCard({ rows }: StatisticsCardProps) {
     validResults.reduce((sum, r) => sum + r[key], 0) / validResults.length;
 
   return (
-    <div className="flex flex-col flex-wrap gap-2 p-4 rounded-xl border border-neutral-200">
+    <div className="flex flex-col flex-wrap gap-2 p-8 rounded-xl border border-neutral-200">
       <h2 className="text-2xl font-bold">Estadísticas Generales</h2>
+      <p className="text-sm text-muted-foreground">
+        Promedio de Ventas, Beneficio Neto e Ingresos Totales Generados por el
+        Modelo de IA
+      </p>
       <div className="flex flex-wrap gap-4">
         <StatsCard
           title="Ventas"
